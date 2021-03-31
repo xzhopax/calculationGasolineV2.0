@@ -1,0 +1,3 @@
+Id 0 : User nullId 1 : User calculationGasoline.users.User@133314b
+Id 1 : User calculationGasoline.users.User@133314b
+Id 1 : User calculationGasoline.users.User@133314b
