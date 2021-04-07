@@ -4,34 +4,56 @@ import calculationGasoline.users.CreateUsers;
 import calculationGasoline.users.User;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
+import java.sql.*;
 
-public class RunRoad {
+public class RunRoad extends JFrame {
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            LoginPanel loginPanel = new LoginPanel();// creat panel MenuGUI
-            loginPanel.setVisible(true); // show panel
-        });
+    private RunRoad() {
+        super("Singin Singup");
+        setSize(800,627);
+        add(new LoginPanel());
+        setLocation(null);
+        setResizable(false);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
     }
-//
-//    public static void main(String[] args) {
-//        User user1 = new User();
-//        User user2 = new User();
-//        User user3 = new User();
-//        User user4 = new User();
-//
-//         CreateUsers.addUser(user1.getID(), user1);
-//         CreateUsers.addUser(user2.getID(), user2);
-//         CreateUsers.addUser(user3.getID(), user3);
-//         CreateUsers.addUser(user4.getID(), user4);
-//
-//         CreateUsers.saveUsersInMap();
-//////         User.cleanerFile();
-////        System.out.println(User.getMapCreateCars());
-////
-////        System.out.println(CreateUsers.readUsersFile());
-//
-//        System.out.println(CreateUsers.getCreateId());
-//    }
+
+
+
+
+
+    public static void main(String[] args) throws SQLException {
+
+
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/users","root","root");
+            Connection connection2 = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/vehicle","root","root");
+
+            Statement statement = connection.createStatement();
+            Statement statement2 = connection2.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM accounts");
+            ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM brand");
+
+
+//        while (resultSet.next()){
+//            System.out.println(resultSet.getString("nick_name"));
+//        }
+
+
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new LoginPanel();
+            }
+        });
+
+
+    }
 }
+

@@ -61,9 +61,10 @@ public class MenuAdminGUI extends JFrame {
         this.setBounds(400, 200, 600, 400); // initial window size
         this.setResizable(true); // you can make the window wider
         setTitle("Программа для расчета затрат бензина");//window title
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setVisible(true);// show panel
         add(getPanel());// add the panel MenuGUI
+        getHelloUser().setText(LoginPanel.getUser().getName());
 
         //I catch the program cross to confirm the exit
         this.addWindowListener(new WindowAdapter() {
@@ -190,4 +191,6 @@ public class MenuAdminGUI extends JFrame {
     public JButton getButtonCreateCar() {
         return buttonCreateCar;
     }
+
+
 }// end class MenuGUI

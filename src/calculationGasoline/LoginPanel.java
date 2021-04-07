@@ -1,12 +1,20 @@
 package calculationGasoline;
 
+import calculationGasoline.users.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class LoginPanel extends JFrame {
+
+    public static Statement statement;
 
     private JPanel panel;
     private JTextField textLogin;
@@ -18,21 +26,24 @@ public class LoginPanel extends JFrame {
     private JButton buttonExitProgram;
     private JLabel errorLogin;
 
-    private static final Map<String, String> mapUsers = new TreeMap<>();
-    static {
-        mapUsers.put("","");
-        mapUsers.put("admin","admin");
-        mapUsers.put("user","");
-    }
+    public static User user;
 
     public LoginPanel() {
 
         this.setBounds(550, 300, 300, 220); // initial window size
         this.setResizable(true); // you can make the window wider
         setTitle("Авторизация");//window title
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);// show panel
         add(getPanel());// add the panel MenuGUI
+
+        try {
+           statement = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/users","root","root").createStatement();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
 
         //I catch the program cross to confirm the exit
         this.addWindowListener(new WindowAdapter() {
@@ -66,35 +77,43 @@ public class LoginPanel extends JFrame {
         buttonLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(() -> {
-                    if (getTextLogin().getText().equals("admin") &&
-                        getTextPassword().getText().equals("admin"))
-                    {
-                        MenuAdminGUI menuAdminGUI = new MenuAdminGUI();
+                try {
+                    ResultSet resultSet = LoginPanel.statement.executeQuery(
+                            "SELECT * FROM accounts WHERE " +
+                                    "login =\'" + textLogin.getText() + "\' " +
+                                    "AND password = \'" + textPassword.getText() + "\'");
+                    if (resultSet.next()){
+                        setUser(new User(resultSet.getInt("id")));
+                        getUser().setName(resultSet.getString("nick_name"));
+                        getUser().setPhone(resultSet.getString("phone"));
+                        getUser().setAccess(resultSet.getString("access"));
+                        getUser().setCity(resultSet.getString("city"));
+                        getUser().setRegion(resultSet.getString("region"));
+                        getUser().setAge(resultSet.getInt("age"));
+
+                        if (resultSet.getInt("access") == 1){
+                            new MenuAdminGUI();
+                        } else {
+                            new MenuGUI();
+                        }
                         setVisible(false); // close the current frame
                         dispose();
-                        getErrorLogin().setText("Производится вход, подождите...");
-                    }
-                    if (getTextLogin().getText().equals("") &&
-                        getTextPassword().getText().equals(""))
-                    {
-                        MenuGUI menuGUI = new MenuGUI();
-                        setVisible(false); // close the current frame
-                        dispose();
-                        getErrorLogin().setText("Производится вход, подождите...");
+
                     } else {
                         getErrorLogin().setForeground(Color.RED);
-                        getErrorLogin().setText("Неверное имя или пароль");
+                        getErrorLogin().setText("Неверный логин или пароль");
                     }
-
-                });
-
+                } catch (SQLException throwables) {throwables.printStackTrace();}
             }
         });
+
         buttonRegistr.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"В процессе разработки");
+
+                Registration registration = new Registration();
+                setVisible(false); // close the current frame
+                dispose();
             }
         });
         buttonExitProgram.addActionListener(new ActionListener() {
@@ -135,12 +154,17 @@ public class LoginPanel extends JFrame {
         return buttonExitProgram;
     }
 
-    public static Map<String, String> getMapCreateCars() {
-        return mapUsers;
-    }
-
     public JLabel getErrorLogin() {
         return errorLogin;
     }
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static void setUser(User user) {
+        LoginPanel.user = user;
+    }
+
     //end getter
 }

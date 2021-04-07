@@ -7,6 +7,8 @@ import calculationGasoline.onBoardComputerCar.workData.WorkData;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * @author Aleksey Ilin
@@ -27,6 +29,7 @@ public class MenuGUI extends JFrame {
     private JLabel menu;
     private JLabel authorProgram;
     private JButton buttonLoginOut;
+    private JLabel helloUser;
 
     /**
      * a static method to display an error message to the user.
@@ -50,13 +53,17 @@ public class MenuGUI extends JFrame {
      *11. sets the action when the button is pressed to exit the program
      */
 
-    public MenuGUI() {
+    public MenuGUI(){
+
+
         this.setBounds(400, 200, 600, 400); // initial window size
         this.setResizable(true); // you can make the window wider
         setTitle("Программа для расчета затрат бензина");//window title
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setVisible(true);// show panel
         add(getPanel());// add the panel MenuGUI
+        getHelloUser().setText(LoginPanel.getUser().getName());
+
 
         //I catch the program cross to confirm the exit
         this.addWindowListener(new WindowAdapter() {
@@ -135,6 +142,8 @@ public class MenuGUI extends JFrame {
                 });
             }
         });
+        helloUser.addComponentListener(new ComponentAdapter() {
+        });
     }// end constructor MenuGUI
 
     //down getter and setter
@@ -174,4 +183,9 @@ public class MenuGUI extends JFrame {
     public JButton getButtonLoginOut() {
         return buttonLoginOut;
     }
+
+    public JLabel getHelloUser() {
+        return helloUser;
+    }
+
 }// end class MenuGUI
