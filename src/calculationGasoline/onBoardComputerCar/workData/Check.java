@@ -1,5 +1,7 @@
 package calculationGasoline.onBoardComputerCar.workData;
 
+import javax.swing.*;
+import java.awt.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -81,6 +83,66 @@ public class Check {
     public static void chekEnterDate(String stringDate){
         if(stringDate.equals("") || stringDate.isEmpty()) stringDate ="01.01.1970";
     }
+
+    public static boolean checkOnlyLetters(String checkString){
+        return checkString.matches("^[a-zA-Z]*$") ||
+                checkString.matches("^[а-яА-ЯЁё]*$");
+    }
+
+    public static boolean checkOnlyLettersEnglish(String checkString){
+        return checkString.matches("^[a-zA-Z](.[a-zA-Z0-9_-]*)$");
+    }
+
+    public static boolean checkValidEmail(String checkString){
+       return checkString.matches("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b" );
+    }
+
+    public static boolean checkValidPhone(String checkString){
+        return checkString.matches("^\\+?[78][-\\(]?\\d{3}\\)?-?\\d{3}-?\\d{2}-?\\d{2}$");
+    }
+
+    public static void getColorPassword(String checkString, JPasswordField passwordField){
+        if (!checkString.matches(("^[a-zA-Z0-9!@#$%^ &*]*$"))) {
+            passwordField.setBackground(Color.RED);
+        } else
+        if (checkString.matches("(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}")){
+            passwordField.setBackground(Color.GREEN);
+        } else
+        if (checkString.matches("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}")) {
+            passwordField.setBackground(Color.YELLOW);
+        } else
+        if (checkString.matches("[0-9a-zA-Z!@#$%^&*]{4,}")) {
+            passwordField.setBackground(Color.ORANGE);
+        } else
+            passwordField.setBackground(Color.PINK);
+    }
+
+    public static String chekPassword(String checkString){
+        if (!checkString.matches(("^[a-zA-Z0-9!@#$%^ &*]*$"))) {
+            return "Введены недопустимые символы";
+        }
+        if (checkString.matches("(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}")){
+            return "Надежный пароль";
+        }
+        if (checkString.matches("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}")) {
+            return "Хороший пароль";
+        }
+        if (checkString.matches("[0-9a-zA-Z!@#$%^&*]{4,}")) {
+            return "Средний пароль";
+        }
+        return "Слабый пароль";
+    }
+
+
+    public static boolean errorPassword(String checkString){
+        return !checkString.matches("^[a-zA-Z0-9!@#$%^ &*]*$");
+    }
+
+    public static boolean checkRegistration(boolean flag){
+        return flag;
+    }
+
+
 
 
 

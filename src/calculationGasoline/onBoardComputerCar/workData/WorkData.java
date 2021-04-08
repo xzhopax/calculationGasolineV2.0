@@ -3,6 +3,10 @@ package calculationGasoline.onBoardComputerCar.workData;
 import calculationGasoline.MenuGUI;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -131,6 +135,16 @@ public class WorkData {
         }
         return sb.toString();
     }//end outDisplayReport
+
+    public static int getAge(String dateString){
+        if(Check.isDateValidInString(dateString)){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            LocalDate endDate = LocalDate.parse(LocalDate.now().format(formatter), formatter);
+            LocalDate startDate = LocalDate.parse(dateString, formatter);
+            Period period = Period.between(startDate, endDate);
+            return period.getYears() ;
+        } else return 0;
+    }
 
 
 
