@@ -1,9 +1,8 @@
 package calculationGasoline.test;
 
-import calculationGasoline.InCityPanel;
 import calculationGasoline.cars.enumsForCar.CarSpeedAndPetrol;
-import calculationGasoline.onBoardComputerCar.workData.Check;
-import calculationGasoline.onBoardComputerCar.workData.WorkData;
+import calculationGasoline.workData.Check;
+import calculationGasoline.workData.WorkData;
 import org.junit.Assert;
 import org.junit.Test;
 

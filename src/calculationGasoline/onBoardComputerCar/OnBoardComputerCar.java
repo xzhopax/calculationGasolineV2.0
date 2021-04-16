@@ -1,8 +1,8 @@
 package calculationGasoline.onBoardComputerCar;
 
 import calculationGasoline.cars.Car;
-import calculationGasoline.onBoardComputerCar.workData.Check;
-import calculationGasoline.onBoardComputerCar.workData.WorkData;
+import calculationGasoline.workData.Check;
+import calculationGasoline.workData.WorkData;
 
 
 public class OnBoardComputerCar implements ActionOnBoardComputerCar {

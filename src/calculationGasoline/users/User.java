@@ -1,15 +1,18 @@
 package calculationGasoline.users;
 
+import calculationGasoline.workData.Entity;
 import calculationGasoline.LoginPanel;
-import calculationGasoline.MenuGUI;
 
 import java.io.*;
-import java.util.*;
 
-public class User implements Serializable{
+public class User extends Entity {
+    @Serial
+    private static final long serialVersionUID = 3941911514417751241L;
+
     private String name = "", login = "", password = "", email = "", city = "", phone = "", access = "", region = "";
     private final int ID;
     private int age = 0;
+    private File file;
 
     public User(int id){
         this.ID = id;
@@ -90,6 +93,15 @@ public class User implements Serializable{
     }
     public void setAge(int age) {
             this.age = age;
+    }
+
+    public File getFile() {
+        return file = new File("resources//reportFile" + LoginPanel.getUser().getID() +".txt");
+
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
     //end getter
 }

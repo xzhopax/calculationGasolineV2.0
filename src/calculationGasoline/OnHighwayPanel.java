@@ -4,11 +4,14 @@ import calculationGasoline.cars.Car;
 import calculationGasoline.cars.CreateCar;
 import calculationGasoline.onBoardComputerCar.OnBoardComputerCar;
 import calculationGasoline.cars.VolkswagenPolo;
-import calculationGasoline.onBoardComputerCar.workData.Check;
+import calculationGasoline.workData.Check;
+import calculationGasoline.workData.WorkData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * @author Aleksey Ilin
@@ -52,6 +55,7 @@ public class OnHighwayPanel extends JFrame {
 
     private Car car = new VolkswagenPolo();
     private OnBoardComputerCar computerCar = new OnBoardComputerCar(car);
+    private boolean flag = false;
 
     /**
      *1.  The constructor creates a panel with the specified parameters;
@@ -243,14 +247,20 @@ public class OnHighwayPanel extends JFrame {
         // if not, then asks to fill in the fields, and if all the fields are filled in correctly,
         // it calculates the result and displays it
         getStart().addActionListener(e -> {
-            if (getTextDate().getText().equals("") || getTextDistance().getText().equals("") ||
-                getTextSpeed().getText().equals("") || getTextPrice().getText().equals("") ||
-                getChoosingCar().getSelectedIndex() == 0 )
+            setFlag(getTextDate().getText().equals(""));
+            setFlag(getTextDistance().getText().equals(""));
+            setFlag(getTextSpeed().getText().equals(""));
+            setFlag(getTextPrice().getText().equals(""));
+            setFlag(getChoosingCar().getSelectedIndex() == 0);
+
+            if (isFlag())
             {
                 getErrorButton().setForeground(Color.RED);
                 getErrorButton().setText("Заполните все поля");
             } else {
                 getErrorButton().setText("");
+                Check.chekEnterDate(getTextDate().getText());
+                getComputerCar().todayDate(getTextDate().getText());
                 getCar().drivingOnHighway(Double.parseDouble(getTextSpeed().getText()));
                 getCar().drivingWithOrNotConditioning(getCar().isConditioner());
                 getCar().drivingWithDynamicStyle(getCar().isDynamicDriving());
@@ -341,6 +351,12 @@ public class OnHighwayPanel extends JFrame {
     }
     protected void setComputerCar(OnBoardComputerCar computerCar) {
         this.computerCar = computerCar;
+    }
+    public boolean isFlag() {
+        return flag;
+    }
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
     //end getters and setters
 }// end class OnHighwayPanel

@@ -15,6 +15,9 @@ import java.util.TreeMap;
 public class LoginPanel extends JFrame {
 
     public static Statement statement;
+    public static String connectDB = "jdbc:mysql://localhost:3306/gasoline";
+    public static String login = "root";
+    public static String password = "root";
 
     private JPanel panel;
     private JTextField textLogin;
@@ -39,7 +42,7 @@ public class LoginPanel extends JFrame {
 
         try {
            statement = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/users","root","root").createStatement();
+                    "jdbc:mysql://localhost:3306/gasoline","root","root").createStatement();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -79,19 +82,24 @@ public class LoginPanel extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     ResultSet resultSet = LoginPanel.statement.executeQuery(
-                            "SELECT * FROM accounts WHERE " +
+                            "SELECT" +
+                                    " * " +
+                                 "FROM" +
+                                    " gasoline.users " +
+                                 "WHERE " +
                                     "login =\'" + textLogin.getText() + "\' " +
-                                    "AND password = \'" + textPassword.getText() + "\'");
+                                 "AND" +
+                                    " password = \'" + textPassword.getText() + "\'");
                     if (resultSet.next()){
                         setUser(new User(resultSet.getInt("id")));
                         getUser().setName(resultSet.getString("nick_name"));
                         getUser().setPhone(resultSet.getString("phone"));
-                        getUser().setAccess(resultSet.getString("access"));
-                        getUser().setCity(resultSet.getString("city"));
-                        getUser().setRegion(resultSet.getString("region"));
+                        getUser().setAccess(resultSet.getString("access_id"));
+                        getUser().setCity(resultSet.getString("city_id"));
+                        getUser().setRegion(resultSet.getString("region_id"));
                         getUser().setAge(resultSet.getInt("age"));
 
-                        if (resultSet.getInt("access") == 1){
+                        if (resultSet.getInt("access_id") == 1){
                             new MenuAdminGUI();
                         } else {
                             new MenuGUI();
@@ -110,8 +118,7 @@ public class LoginPanel extends JFrame {
         buttonRegistr.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                Registration registration = new Registration();
+                new Registration();
                 setVisible(false); // close the current frame
                 dispose();
             }
@@ -133,38 +140,29 @@ public class LoginPanel extends JFrame {
     public JPanel getPanel() {
         return panel;
     }
-
     public JTextField getTextLogin() {
         return textLogin;
     }
-
     public JTextField getTextPassword() {
         return textPassword;
     }
-
     public JButton getButtonLogin() {
         return buttonLogin;
     }
-
     public JButton getButtonRegistr() {
         return buttonRegistr;
     }
-
     public JButton getButtonExitProgram() {
         return buttonExitProgram;
     }
-
     public JLabel getErrorLogin() {
         return errorLogin;
     }
-
     public static User getUser() {
         return user;
     }
-
     public static void setUser(User user) {
         LoginPanel.user = user;
     }
-
     //end getter
 }

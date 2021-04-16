@@ -3,11 +3,14 @@ package calculationGasoline;
 import calculationGasoline.cars.Car;
 import calculationGasoline.cars.CreateCar;
 import calculationGasoline.onBoardComputerCar.OnBoardComputerCar;
-import calculationGasoline.onBoardComputerCar.workData.Check;
+import calculationGasoline.workData.Check;
+import calculationGasoline.workData.WorkData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * @author Aleksey Ilin
@@ -59,6 +62,7 @@ public class InCityPanel extends JFrame {
 
     private Car car = CreateCar.getMapCreateCars().get(1);
     private OnBoardComputerCar computerCar = new OnBoardComputerCar(getCar());
+    private boolean flag = false;
 
     /**
      * 1.  The constructor creates a panel with the specified parameters;
@@ -330,11 +334,12 @@ public class InCityPanel extends JFrame {
         // it calculates the result and displays it
         getStart().addActionListener(e -> {
             // write the entered arguments into the method and get the result:
-            if (getTextDistance().getText().equals("") ||
-                getTextPrice().getText().equals("") ||
-                getTextMidGasoline().getText().equals("0") &&
-                getTextTraffic().getText().equals("0") ||
-                getChoosingCar().getSelectedIndex() == 0 )
+            setFlag(getTextDistance().getText().equals(""));
+            setFlag(getTextPrice().getText().equals(""));
+            setFlag(getTextMidGasoline().getText().equals("0") && getTextTraffic().getText().equals("0"));
+            setFlag(getChoosingCar().getSelectedIndex() == 0);
+
+            if (isFlag())
             {
                 getErrorButton().setForeground(Color.RED);
                 getErrorButton().setText("Заполните все поля");
@@ -453,5 +458,11 @@ public class InCityPanel extends JFrame {
     }
     private void setComputerCar(OnBoardComputerCar computerCar) {
         this.computerCar = computerCar;
+    }
+    public boolean isFlag() {
+        return flag;
+    }
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 }// end class InCityPanel

@@ -1,7 +1,12 @@
-package calculationGasoline.onBoardComputerCar.workData;
+package calculationGasoline.workData;
+
+import calculationGasoline.LoginPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -140,6 +145,17 @@ public class Check {
 
     public static boolean checkRegistration(boolean flag){
         return flag;
+    }
+
+    public static boolean checkFileInBD(String nameFile, String nameColumn, String nameField) throws SQLException {
+        ResultSet resultSet = LoginPanel.statement.executeQuery(
+                String.format("SELECT content FROM %s WHERE %s = \'%s\';",nameFile,nameColumn,nameField));
+        return resultSet.next();
+    }
+
+    public static boolean checkFindFile(){
+        File file = new File(WorkData.getPathNameFile());
+        return file.exists();
     }
 
 

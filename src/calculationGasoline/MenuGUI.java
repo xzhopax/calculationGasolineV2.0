@@ -3,11 +3,11 @@ package calculationGasoline;
 import calculationGasoline.cars.Car;
 import calculationGasoline.cars.VolkswagenPolo;
 import calculationGasoline.onBoardComputerCar.OnBoardComputerCar;
-import calculationGasoline.onBoardComputerCar.workData.WorkData;
+import calculationGasoline.workData.WorkData;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.sql.ResultSet;
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -30,6 +30,8 @@ public class MenuGUI extends JFrame {
     private JLabel authorProgram;
     private JButton buttonLoginOut;
     private JLabel helloUser;
+    private JButton saveBD;
+    private JButton download;
 
     /**
      * a static method to display an error message to the user.
@@ -82,7 +84,7 @@ public class MenuGUI extends JFrame {
         //when you click on the button in the inCity menu, the menu closes and a panel
         // is created for calculating costs in the city
         getInCity().addActionListener(e -> SwingUtilities.invokeLater(() -> {
-            InCityPanel city = new InCityPanel();
+            new InCityPanel();
             setVisible(false); // close the current frame
             dispose();
         })); // end inCity
@@ -90,7 +92,7 @@ public class MenuGUI extends JFrame {
         //when you click on the button in the onHighway menu, the menu closes and a panel
         // is created for calculating costs on the highway
         getOnHighway().addActionListener(e -> SwingUtilities.invokeLater(() -> {
-            OnHighwayPanel highwayPanel = new OnHighwayPanel();
+            new OnHighwayPanel();
             setVisible(false); // close the current frame
             dispose();
         }));// end onHighway
@@ -135,7 +137,7 @@ public class MenuGUI extends JFrame {
                     int result = JOptionPane.showConfirmDialog
                        (null, "Вы точно хотите выйти?", "Выход", JOptionPane.YES_NO_OPTION);
                     if (result == JOptionPane.YES_OPTION) {
-                        LoginPanel loginPanel = new LoginPanel();
+                        new LoginPanel();
                         setVisible(false); // close the current frame
                         dispose();
                     }
@@ -144,6 +146,7 @@ public class MenuGUI extends JFrame {
         });
         helloUser.addComponentListener(new ComponentAdapter() {
         });
+
     }// end constructor MenuGUI
 
     //down getter and setter

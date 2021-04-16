@@ -1,10 +1,16 @@
 package calculationGasoline.cars;
 
+import calculationGasoline.workData.Entity;
 import calculationGasoline.cars.enumsForCar.CarSpeedAndPetrol;
 import calculationGasoline.cars.enumsForCar.NameCar;
 import calculationGasoline.cars.enumsForCar.RoadLoad;
 
-public abstract class Car {
+import java.io.Serial;
+
+public abstract class Car extends Entity {
+    @Serial
+    private static final long serialVersionUID = 1725230466545397984L;
+
     private final String name = NameCar.CAR.getName();
     private final double maxSpeed = 200;
     private double gasolineCosts  = 0;

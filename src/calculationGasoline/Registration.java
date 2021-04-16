@@ -1,7 +1,7 @@
 package calculationGasoline;
 
-import calculationGasoline.onBoardComputerCar.workData.Check;
-import calculationGasoline.onBoardComputerCar.workData.WorkData;
+import calculationGasoline.workData.Check;
+import calculationGasoline.workData.WorkData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,8 +79,12 @@ public class Registration extends JFrame {
                 if (Check.checkOnlyLettersEnglish(getTextLogin().getText())){
                     try {
                         ResultSet resultSet = LoginPanel.statement.executeQuery(
-                                "SELECT id FROM accounts " +
-                                        "WHERE login= \'" + getTextLogin().getText() + "\'" );
+                                    "SELECT" +
+                                            " id" +
+                                        " FROM" +
+                                            " gasoline.users " +
+                                        "WHERE" +
+                                            " login= \'" + getTextLogin().getText() + "\'");
                         if (resultSet.next()){
                             getErrorLogin().setForeground(Color.RED);
                             getErrorLogin().setText("Уже существует");
@@ -226,20 +230,27 @@ public class Registration extends JFrame {
                     getErrorRegistr().setText("");
                     try {
                         ResultSet resultSet = LoginPanel.statement.executeQuery(
-                                "SELECT id FROM accounts " +
-                                        "WHERE login= \'" + getTextLogin().getText() + "\'");
+                                "SELECT" +
+                                        " id " +
+                                     "FROM" +
+                                        " gasoline.users " +
+                                     "WHERE" +
+                                        " login= \'" + getTextLogin().getText() + "\'");
                         if (resultSet.next()) {
                             getErrorRegistr().setForeground(Color.RED);
                             getErrorRegistr().setText("Такой пользователь уже существует");
                         } else {
-                            LoginPanel.statement.execute("INSERT INTO accounts(login,password,nick_name,email," +
-                                    "age,phone) VALUES (" +
-                                    "\'" + getTextLogin().getText() + "\'," +
-                                    "\'" + getTextPassword().getText() + "\'," +
-                                    "\'" + getTextNick().getText() + "\'," +
-                                    "\'" + getTextMail().getText() + "\'," +
-                                    "" + WorkData.getAge(getTextAge().getText()) + "," +
-                                    "\'" + getTextPhone().getText() + "\'" +
+                            LoginPanel.statement.execute(
+                                "INSERT INTO " +
+                                             "gasoline.users(login,password,nick_name," +
+                                             "email,age,phone) " +
+                                    "VALUES (" +
+                                             "\'" + getTextLogin().getText() + "\'," +
+                                             "\'" + getTextPassword().getText() + "\'," +
+                                             "\'" + getTextNick().getText() + "\'," +
+                                             "\'" + getTextMail().getText() + "\'," +
+                                             "" + WorkData.getAge(getTextAge().getText()) + "," +
+                                             "\'" + getTextPhone().getText() + "\'" +
                                     ")");
                             JOptionPane.showMessageDialog(null, "Аккаунт успешно создан");
                             new LoginPanel();
@@ -272,80 +283,62 @@ public class Registration extends JFrame {
     public JPanel getPanel() {
         return panel;
     }
-
     public JTextField getTextLogin() {
         return textLogin;
     }
-
     public JTextField getTextNick() {
         return textNick;
     }
-
     public JTextField getTextAge() {
         return textAge;
     }
-
     public JPasswordField getTextPassword() {
         return textPassword;
     }
-
     public JComboBox getComboRegion() {
         return comboRegion;
     }
-
     public JComboBox getComboCity() {
         return comboCity;
     }
-
     public JTextField getTextPhone() {
         return textPhone;
     }
-
     public JTextField getTextMail() {
         return textMail;
     }
-
     public JButton getButtonRegistration() {
         return buttonRegistration;
     }
-
     public JButton getButtonExit() {
         return buttonExit;
     }
-
     public JLabel getErrorLogin() {
         return errorLogin;
     }
-
     public JLabel getErrorPassword() {
         return errorPassword;
     }
-
     public JLabel getErrorMail() {
         return errorMail;
     }
-
     public JLabel getErrorRegistr() {
         return errorRegistr;
     }
-
     public JLabel getErrorPhone() {
         return errorPhone;
     }
-
     public JLabel getErrorNick() {
         return errorNick;
     }
-
     public JLabel getErrorAge() {
         return errorAge;
     }
-
     private boolean isFlag() {
         return flag;
     }
-
     private void setFlag(boolean flag) {
         this.flag = flag;
     }
+    //end get
 }
