@@ -6,6 +6,7 @@ import calculationGasoline.onBoardComputerCar.OnBoardComputerCar;
 import calculationGasoline.workData.WorkData;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -34,6 +35,7 @@ public class MenuAdminGUI extends JFrame {
     private JButton buttonLoginOut;
     private JLabel helloUser;
     private JButton buttonCreateCar;
+    private JButton deliteUser;
 
     /**
      * a static method to display an error message to the user.
@@ -58,13 +60,17 @@ public class MenuAdminGUI extends JFrame {
      */
 
     public MenuAdminGUI() {
+        setLayout(new BorderLayout());
+        setContentPane(new JLabel(new ImageIcon("images/fon2.jpg")));
+        setLayout(new FlowLayout());
+
         this.setBounds(400, 200, 600, 400); // initial window size
         this.setResizable(true); // you can make the window wider
         setTitle("Программа для расчета затрат бензина");//window title
 //        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setVisible(true);// show panel
         add(getPanel());// add the panel MenuGUI
-        getHelloUser().setText(LoginPanel.getUser().getName());
+        getHelloUser().setText("Здравствуйте " + LoginPanel.getUser().getName());
 
         //I catch the program cross to confirm the exit
         this.addWindowListener(new WindowAdapter() {
@@ -144,6 +150,12 @@ public class MenuAdminGUI extends JFrame {
                 });//end SwingUtilities.invokeLater(()
             }
         }); // end buttonLoginOut.addActionListener
+        deliteUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }// end constructor MenuGUI
 
     //down getter and setter

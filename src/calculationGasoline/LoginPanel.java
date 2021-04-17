@@ -32,13 +32,20 @@ public class LoginPanel extends JFrame {
     public static User user;
 
     public LoginPanel() {
+        setLayout(new BorderLayout());
+        setContentPane(new JLabel(new ImageIcon("images/tunnel2.jpg")));
+        setLayout(new FlowLayout());
 
-        this.setBounds(550, 300, 300, 220); // initial window size
-        this.setResizable(true); // you can make the window wider
+        this.setBounds(550, 300, 500, 320); // initial window size
+        this.setResizable(false); // you can make the window wider
+        this.setLocationRelativeTo(null);
+
         setTitle("Авторизация");//window title
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);// show panel
+
         add(getPanel());// add the panel MenuGUI
+
 
         try {
            statement = DriverManager.getConnection(
@@ -164,5 +171,7 @@ public class LoginPanel extends JFrame {
     public static void setUser(User user) {
         LoginPanel.user = user;
     }
+
+
     //end getter
 }
