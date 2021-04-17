@@ -5,13 +5,10 @@ import calculationGasoline.cars.CreateCar;
 import calculationGasoline.onBoardComputerCar.OnBoardComputerCar;
 import calculationGasoline.cars.VolkswagenPolo;
 import calculationGasoline.workData.Check;
-import calculationGasoline.workData.WorkData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * @author Aleksey Ilin
@@ -79,10 +76,10 @@ public class OnHighwayPanel extends JFrame {
 
     protected OnHighwayPanel() {
         setLayout(new BorderLayout());
-        setContentPane(new JLabel(new ImageIcon("images/highway2.jpg")));
+        setContentPane(new JLabel(new ImageIcon("images/highway.jpg")));
         setLayout(new FlowLayout());
 
-        this.setBounds(400, 200, 700, 500);// initial window size
+        this.setBounds(400, 200, 800, 630);// initial window size
         this.setResizable(false); // you can make the window wider
         setTitle("расчет затрат бензина на трассе");//window title
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -111,6 +108,7 @@ public class OnHighwayPanel extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (getChoosingCar().getSelectedIndex() == 0) {
+                    getErrorChoosingCar().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorChoosingCar().setForeground(Color.RED);
                     getErrorChoosingCar().setText("Выберите машину");
                     getChoosingCar().setSelectedIndex(0);
@@ -145,6 +143,7 @@ public class OnHighwayPanel extends JFrame {
             public void focusLost(FocusEvent e) {
                 getComputerCar().todayDate(getTextDate().getText());
                 if (getComputerCar().getDate().equals("")) {
+                    getErrorDate().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorDate().setForeground(Color.RED);
                     getErrorDate().setText("Неправильно введена дата");
                     getTextDate().setText("01.01.1970");
@@ -164,18 +163,18 @@ public class OnHighwayPanel extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 // if the string number is double and less than maxSpeed this car, then we write it to a variable speed
-                if (Check.checkStringContainceDouble(getTextSpeed().getText()) &&
+                if (Check.checkSpeedAndCostsGasInString(getTextSpeed().getText()) &&
                     Double.parseDouble(getTextSpeed().getText()) <= getCar().getMaxSpeed() ||
-                    Check.checkStringContainceInteger(getTextSpeed().getText()) &&
+                    Check.checkSpeedAndCostsGasInString(getTextSpeed().getText()) &&
                     Integer.parseInt(getTextSpeed().getText()) <= getCar().getMaxSpeed())
                 {
                     getTextSpeed().setText(Check.validDoubleInString(getTextSpeed().getText()));
                     getErrorSpeed().setText("");
                 } else {
+                    getErrorSpeed().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorSpeed().setForeground(Color.RED);
                     getErrorSpeed().setText("Неправильно введена скорость");
                     getTextSpeed().setText("");
-
                 }
             }
         }); // end anonymous class ActionListener (textSpeed)
@@ -190,11 +189,12 @@ public class OnHighwayPanel extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 // check, if the string number is double or an integer, if false - removes value
-                if (Check.checkStringContainceDoubleOrInteger(getTextDistance().getText()))
+                if (Check.checkStringContainDoubleOrInteger(getTextDistance().getText()))
                 {
                     getTextDistance().setText(Check.validDoubleInString(getTextDistance().getText()));
                     getErrorDistance().setText("");
                 } else {
+                    getErrorDistance().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorDistance().setForeground(Color.RED);
                     getErrorDistance().setText("Неправильно введена дистанция");
                     getTextDistance().setText("");
@@ -212,11 +212,12 @@ public class OnHighwayPanel extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 //if the string number is double or an integer, then leaves the field content or cleaner field if false
-                if (Check.checkStringContainceDoubleOrInteger(getTextPrice().getText()))
+                if (Check.checkPriceInString(getTextPrice().getText()))
                 {
                     getTextPrice().setText(Check.validDoubleInString(getTextPrice().getText()));
                     getErrorPrice().setText("");
                 } else {
+                    getErrorPrice().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorPrice().setForeground(Color.RED);
                     getErrorPrice().setText("Неправильно введена цена");
                     getTextPrice().setText("");
@@ -252,20 +253,21 @@ public class OnHighwayPanel extends JFrame {
         // if not, then asks to fill in the fields, and if all the fields are filled in correctly,
         // it calculates the result and displays it
         getStart().addActionListener(e -> {
-            setFlag(getTextDate().getText().equals(""));
-            setFlag(getTextDistance().getText().equals(""));
-            setFlag(getTextSpeed().getText().equals(""));
-            setFlag(getTextPrice().getText().equals(""));
-            setFlag(getChoosingCar().getSelectedIndex() == 0);
 
-            if (isFlag())
+            setFlag(getChoosingCar().getSelectedIndex() == 0);
+            setFlag(Check.isDateValidInString(Check.chekEnterDate(getTextDate().getText())));
+            setFlag(Check.checkStringContainDoubleOrInteger(getTextDistance().getText()));
+            setFlag(Check.checkSpeedAndCostsGasInString(getTextSpeed().getText()));
+            setFlag(Check.checkPriceInString(getTextPrice().getText()));
+
+            if (!isFlag())
             {
+                getErrorButton().setFont(new Font("TimesRoman", Font.BOLD, 14));
                 getErrorButton().setForeground(Color.RED);
                 getErrorButton().setText("Заполните все поля");
             } else {
                 getErrorButton().setText("");
-                Check.chekEnterDate(getTextDate().getText());
-                getComputerCar().todayDate(getTextDate().getText());
+                getComputerCar().todayDate(Check.chekEnterDate(getTextDate().getText()));
                 getCar().drivingOnHighway(Double.parseDouble(getTextSpeed().getText()));
                 getCar().drivingWithOrNotConditioning(getCar().isConditioner());
                 getCar().drivingWithDynamicStyle(getCar().isDynamicDriving());
@@ -283,7 +285,11 @@ public class OnHighwayPanel extends JFrame {
                     (null, "Вы точно хотите вернуться в меню?",
                             "вернуться в меню", JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
-                MenuGUI menuGUI = new MenuGUI();
+                if (LoginPanel.getUser().getAccess().equals("1")) {
+                    new MenuAdminGUI();
+                }else {
+                    new MenuGUI();
+                }
                 setVisible(false);//hide window
                 dispose();//clear memory main.gasProject.resources after hiding the window
             }

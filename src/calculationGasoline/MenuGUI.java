@@ -58,11 +58,11 @@ public class MenuGUI extends JFrame {
 
     public MenuGUI(){
         setLayout(new BorderLayout());
-        setContentPane(new JLabel(new ImageIcon("images/fon2.jpg")));
+        setContentPane(new JLabel(new ImageIcon("images/fon.jpg")));
         setLayout(new FlowLayout());
 
         this.setBounds(400, 200, 600, 400); // initial window size
-        this.setResizable(true); // you can make the window wider
+        this.setResizable(false); // you can make the window wider
         setTitle("Программа для расчета затрат бензина");//window title
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setVisible(true);// show panel

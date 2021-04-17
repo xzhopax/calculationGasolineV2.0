@@ -33,7 +33,7 @@ public class LoginPanel extends JFrame {
 
     public LoginPanel() {
         setLayout(new BorderLayout());
-        setContentPane(new JLabel(new ImageIcon("images/tunnel2.jpg")));
+        setContentPane(new JLabel(new ImageIcon("images/tunnel.jpg")));
         setLayout(new FlowLayout());
 
         this.setBounds(550, 300, 500, 320); // initial window size

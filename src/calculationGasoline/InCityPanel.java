@@ -4,13 +4,10 @@ import calculationGasoline.cars.Car;
 import calculationGasoline.cars.CreateCar;
 import calculationGasoline.onBoardComputerCar.OnBoardComputerCar;
 import calculationGasoline.workData.Check;
-import calculationGasoline.workData.WorkData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * @author Aleksey Ilin
@@ -88,10 +85,10 @@ public class InCityPanel extends JFrame {
 
     public InCityPanel() {
         setLayout(new BorderLayout());
-        setContentPane(new JLabel(new ImageIcon("images/city8.jpg")));
+        setContentPane(new JLabel(new ImageIcon("images/city.jpg")));
         setLayout(new FlowLayout());
 
-        this.setBounds(400, 200, 800, 530);// initial window size
+        this.setBounds(400, 200, 850, 630);// initial window size
         this.setResizable(false); // you can make the window wider
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -121,6 +118,7 @@ public class InCityPanel extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (getChoosingCar().getSelectedIndex()==0)
                 {// if error
+                    getErrorChoosingCar().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorChoosingCar().setForeground(Color.RED);
                     getErrorChoosingCar().setText("Выберите машину");
                     getChoosingCar().setSelectedIndex(0);
@@ -160,6 +158,7 @@ public class InCityPanel extends JFrame {
                 getComputerCar().todayDate(getTextDate().getText());
                 // if error
                 if (getComputerCar().getDate().equals("")) {
+                    getErrorDate().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorDate().setForeground(Color.RED);
                     getErrorDate().setText("Неправильно введена дата");
                     getTextDate().setText("");
@@ -181,11 +180,12 @@ public class InCityPanel extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 // if the string number is double or an integer, then we write it to the variable distance
-                if (Check.checkStringContainceDoubleOrInteger(getTextDistance().getText()))
+                if (Check.checkStringContainDoubleOrInteger(getTextDistance().getText()))
                 {
                     getTextDistance().setText(Check.validDoubleInString(getTextDistance().getText()));
                     getErrorDistance().setText("");
                 } else { // else error
+                    getErrorDistance().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorDistance().setForeground(Color.RED);
                     getErrorDistance().setText("Неправильно введена дистанция");
                     getTextDistance().setText("");
@@ -237,6 +237,7 @@ public class InCityPanel extends JFrame {
                             getErrorMidGasoline().setText("");
 
                         } else {
+                            getErrorTraffic().setFont(new Font("TimesRoman", Font.BOLD, 14));
                             getErrorTraffic().setForeground(Color.RED);
                             getErrorTraffic().setText("Неправильно введен трафик");
                             getTextTraffic().setText("0");
@@ -270,13 +271,14 @@ public class InCityPanel extends JFrame {
 
                         // if the string number is double or an integer, then we write it to the variable distance
                        if (getTextMidGasoline().getText() != null &&
-                           Check.checkStringContainceDoubleOrInteger(getTextMidGasoline().getText()))
+                           Check.checkStringContainDoubleOrInteger(getTextMidGasoline().getText()))
                        {
                            getTextMidGasoline().setText(
                                    Check.validDoubleInString(getTextMidGasoline().getText()));
                            getErrorMidGasoline().setText("");
                            getErrorTraffic().setText("");
                        } else {
+                           getErrorMidGasoline().setFont(new Font("TimesRoman", Font.BOLD, 14));
                            getErrorMidGasoline().setForeground(Color.RED);
                            getErrorMidGasoline().setText("Неправильно введен расход");
                            getTextMidGasoline().setText("0");
@@ -297,12 +299,13 @@ public class InCityPanel extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 // if the string number is double or an integer, then we write it to the variable price
-                if (getTextPrice().getText().matches("(\\d+(\\.?\\d+))") ||
-                    getTextPrice().getText().matches("\\d+"))
+                if (getTextPrice().getText().matches("^(\\d+(\\.?[\\d]{1,2}))$") ||
+                    getTextPrice().getText().matches("^\\d+$"))
                 {
                     getTextPrice().setText(Check.validDoubleInString(getTextPrice().getText()));
                     getErrorPrice().setText("");
                 } else {
+                    getErrorPrice().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorPrice().setForeground(Color.RED);
                     getErrorPrice().setText("Неправильно введена цена");
                     getTextPrice().setText("");
@@ -347,11 +350,11 @@ public class InCityPanel extends JFrame {
             if (isFlag())
             {
                 getErrorButton().setForeground(Color.RED);
+                getErrorButton().setFont(new Font("TimesRoman", Font.BOLD, 14));
                 getErrorButton().setText("Заполните все поля");
             } else {
                 getErrorButton().setText("");
-                Check.chekEnterDate(getTextDate().getText());
-                getComputerCar().todayDate(getTextDate().getText());
+                getComputerCar().todayDate(Check.chekEnterDate(getTextDate().getText()));
                 if (getTextTraffic().getText().equals("0"))
                 {
                     getCar().setGasolineCosts(Double.parseDouble(getTextMidGasoline().getText()));
@@ -374,9 +377,13 @@ public class InCityPanel extends JFrame {
                     (null, "Вы точно хотите вернуться в меню?",
                             "вернуться в меню", JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
-                MenuAdminGUI menuAdminGUI = new MenuAdminGUI();
-                setVisible(false);
-                dispose();
+                if (LoginPanel.getUser().getAccess().equals("1")) {
+                    new MenuAdminGUI();
+                }else {
+                    new MenuGUI();
+                }
+                setVisible(false);//hide window
+                dispose();//clear memory main.gasProject.resources after hiding the window
             }
         });// end button returnMenu
 

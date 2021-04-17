@@ -43,12 +43,18 @@ public class Registration extends JFrame {
     private JLabel questionBirthday;
     private JLabel questionPhone;
     private JLabel questionEmail;
+    private JLabel authorProgram;
 
     private boolean flag = false;
 
     public Registration(){
-        this.setBounds(400, 200, 600, 400); // initial window size
-        this.setResizable(true); // you can make the window wider
+        setLayout(new BorderLayout());
+        setContentPane(new JLabel(new ImageIcon("images/reg.jpg")));
+        setLayout(new FlowLayout());
+
+        this.setBounds(400, 200, 850, 630); // initial window size
+        this.setResizable(false); // you can make the window wider
+        this.setLocationRelativeTo(null);
         setTitle("Регистрация");//window title
 //        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setVisible(true);// show panel
@@ -93,6 +99,7 @@ public class Registration extends JFrame {
                         throwables.printStackTrace();
                     }
                 } else {
+                    getErrorLogin().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorLogin().setForeground(Color.RED);
                     getErrorLogin().setText("Введены неверные символы");
                 }
@@ -109,6 +116,7 @@ public class Registration extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 if (Check.errorPassword(getTextPassword().getText())){
+                    getErrorPassword().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorPassword().setForeground(Color.RED);
                     getErrorPassword().setText("Введены неверные символы");
                 } else {
@@ -130,6 +138,7 @@ public class Registration extends JFrame {
                     getErrorNick().setText("");
 
                 } else {
+                    getErrorNick().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorNick().setForeground(Color.RED);
                     getErrorNick().setText("Неверный формат имени");
                 }
@@ -149,6 +158,7 @@ public class Registration extends JFrame {
                     getErrorAge().setText("");
 
                 } else {
+                    getErrorAge().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorAge().setForeground(Color.RED);
                     getErrorAge().setText("Неверный фофрмат даты");
                 }
@@ -190,6 +200,7 @@ public class Registration extends JFrame {
                 if (Check.checkValidPhone(getTextPhone().getText())){
                     getErrorPhone().setText("");
                 } else {
+                    getErrorPhone().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorPhone().setForeground(Color.RED);
                     getErrorPhone().setText("Неверный формат номера");
                 }
@@ -207,6 +218,7 @@ public class Registration extends JFrame {
                 if (Check.checkValidEmail(getTextMail().getText())){
                     getErrorMail().setText("");
                 } else {
+                    getErrorMail().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorMail().setForeground(Color.RED);
                     getErrorMail().setText("Неверный формат почты");
                 }
@@ -224,6 +236,7 @@ public class Registration extends JFrame {
                 setFlag(Check.checkValidEmail(getTextMail().getText()));
 
                 if (!isFlag()){
+                    getErrorRegistr().setFont(new Font("TimesRoman", Font.BOLD, 14));
                     getErrorRegistr().setForeground(Color.RED);
                     getErrorRegistr().setText("Заполните все поля правильно");
                 } else {
@@ -237,6 +250,7 @@ public class Registration extends JFrame {
                                      "WHERE" +
                                         " login= \'" + getTextLogin().getText() + "\'");
                         if (resultSet.next()) {
+                            getErrorRegistr().setFont(new Font("TimesRoman", Font.BOLD, 14));
                             getErrorRegistr().setForeground(Color.RED);
                             getErrorRegistr().setText("Такой пользователь уже существует");
                         } else {

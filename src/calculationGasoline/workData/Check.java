@@ -15,27 +15,35 @@ public class Check {
 
     /**
      * validDouble - checking a string for a number double
-     * @param StringNumPrice - accepts a string as input to check it for double
+     * @param stringNumPrice - accepts a string as input to check it for double
      * @return - if the input parameter is correct, then it returns the number of String
      */
-    public static String validDoubleInString(String StringNumPrice) {
-        if (StringNumPrice.matches("(\\d+(\\.\\d+))") && Double.parseDouble(StringNumPrice) > 0
-                || StringNumPrice.matches("\\d+") && Integer.parseInt(StringNumPrice) > 0) {
-            return StringNumPrice;
+    public static String validDoubleInString(String stringNumPrice) {
+        if (stringNumPrice == null || stringNumPrice.isEmpty()){
+            return "";
         }
+        if (stringNumPrice.matches("^(\\d+\\.(\\d+))$") && Double.parseDouble(stringNumPrice) > 0 ||
+                    stringNumPrice.matches("^\\d+$") && Integer.parseInt(stringNumPrice) > 0) {
+            return stringNumPrice;
+        } else
         return "";
     }// end validDouble
 
+
     /**
-     * validInteger(String StringNumPrice) - checking a string for a number integer
-     * @param StringNumPrice - accepts a string as an input to check it for an integer
+     * validInteger(String stringNumPrice) - checking a string for a number integer
+     * @param stringNumPrice - accepts a string as an input to check it for an integer
      * @return - if the input parameter is correct, then it returns String
      */
-     public static String validIntegerInString(String StringNumPrice) {
+     public static String validIntegerInString(String stringNumPrice) {
+         if (stringNumPrice == null || stringNumPrice.isEmpty()){
+             return "";
+         }
 
-        if (StringNumPrice.matches("\\d+") && Integer.parseInt(StringNumPrice) > 0) {
-            return StringNumPrice;
-        }
+        if (stringNumPrice.matches("\\d+") &&
+                        Integer.parseInt(stringNumPrice) > 0) {
+            return stringNumPrice;
+        } else
         return "";
     }// end validInteger
 
@@ -56,90 +64,138 @@ public class Check {
     }// end isDateValid
 
     /**
-     * checkStringContainceDoubleOrInteger - Checking string to check it on the containce doube or integer
+     * checkStringContainDoubleOrInteger - Checking string to check it on the contain double or integer
      *
-     * @param str - takes the string to check it on the containce doube or integer
+     * @param str - takes the string to check it on the contain double (1 Sign after the comma) or integer
      * @return - true if contains and false if not contains
      */
-    public static boolean checkStringContainceDoubleOrInteger(String str){
-        return str.matches("(\\d+(\\.?\\d+))") || str.matches("\\d+");
+    public static boolean checkStringContainDoubleOrInteger(String str){
+        if (str == null || str.isEmpty()){
+            return false;
+        }
+        return str.matches("^(\\d+(\\.?[\\d]))$") || str.matches("^\\d+$");
+    }
+
+
+    /**
+     * checkStringContainDouble - Checking string to check it on the contain double
+     *
+     * @param str - takes the string to check it on the contain double
+     * @return - true if contains and false if not contains
+     */
+    public static boolean checkStringContainDouble(String str){
+        if (str == null || str.isEmpty()){
+            return false;
+        }
+        return str.matches("^(\\d+(\\.?\\d+))$");
     }
 
     /**
-     * checkStringContainceDouble - Checking string to check it on the containce doubel
+     * checkStringContainInteger - Checking string to check it on the contain integer
      *
-     * @param str - takes the string to check it on the containce doubel
+     * @param str - takes the string to check it on the contain integer
      * @return - true if contains and false if not contains
      */
-    public static boolean checkStringContainceDouble(String str){
-        return str.matches("(\\d+(\\.?\\d+))");
+    public static boolean checkStringContainInteger(String str){
+        if (str == null || str.isEmpty()){
+            return false;
+        }
+        return str.matches("^\\d+$");
     }
 
-    /**
-     * checkStringContainceInteger - Checking string to check it on the containce integer
-     *
-     * @param str - takes the string to check it on the containce integer
-     * @return - true if contains and false if not contains
-     */
-    public static boolean checkStringContainceInteger(String str){
-        return str.matches("\\d+");
-    }
-
-    public static void chekEnterDate(String stringDate){
-        if(stringDate.equals("") || stringDate.isEmpty()) stringDate ="01.01.1970";
+    public static String chekEnterDate(String stringDate){
+        if (stringDate == null ||
+                stringDate.isEmpty()){
+            return "01.01.1970";
+        }else return stringDate;
     }
 
     public static boolean checkOnlyLetters(String checkString){
+        if (checkString == null || checkString.isEmpty()){
+            return false;
+        }
         return checkString.matches("^[a-zA-Z]*$") ||
                 checkString.matches("^[а-яА-ЯЁё]*$");
     }
 
     public static boolean checkOnlyLettersEnglish(String checkString){
+        if (checkString == null || checkString.isEmpty()){
+            return false;
+        }
         return checkString.matches("^[a-zA-Z](.[a-zA-Z0-9_-]*)$");
     }
 
     public static boolean checkValidEmail(String checkString){
+        if (checkString == null || checkString.isEmpty()){
+            return false;
+        }
        return checkString.matches("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b" );
     }
 
     public static boolean checkValidPhone(String checkString){
+        if (checkString == null || checkString.isEmpty()){
+            return false;
+        }
         return checkString.matches("^\\+?[78][-\\(]?\\d{3}\\)?-?\\d{3}-?\\d{2}-?\\d{2}$");
     }
 
     public static void getColorPassword(String checkString, JPasswordField passwordField){
-        if (!checkString.matches(("^[a-zA-Z0-9!@#$%^ &*]*$"))) {
+        if (checkString == null || checkString.isEmpty() ||!checkString.matches(("^[a-zA-Z0-9!@#$%^ &*]*$"))) {
             passwordField.setBackground(Color.RED);
         } else
-        if (checkString.matches("(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}")){
+        if (checkString.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}$")){
             passwordField.setBackground(Color.GREEN);
         } else
-        if (checkString.matches("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}")) {
+        if (checkString.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}$")) {
             passwordField.setBackground(Color.YELLOW);
         } else
-        if (checkString.matches("[0-9a-zA-Z!@#$%^&*]{4,}")) {
+        if (checkString.matches("^[0-9a-zA-Z!@#$%^&*]{4,}$")) {
             passwordField.setBackground(Color.ORANGE);
         } else
             passwordField.setBackground(Color.PINK);
     }
 
     public static String chekPassword(String checkString){
-        if (!checkString.matches(("^[a-zA-Z0-9!@#$%^ &*]*$"))) {
+        if (checkString == null || checkString.isEmpty() ||!checkString.matches(("^[a-zA-Z0-9!@#$%^ &*]*$"))) {
             return "Введены недопустимые символы";
         }
-        if (checkString.matches("(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}")){
+        if (checkString.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}$")){
             return "Надежный пароль";
         }
-        if (checkString.matches("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}")) {
+        if (checkString.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}$")) {
             return "Хороший пароль";
         }
-        if (checkString.matches("[0-9a-zA-Z!@#$%^&*]{4,}")) {
+        if (checkString.matches("^[0-9a-zA-Z!@#$%^&*]{4,}$")) {
             return "Средний пароль";
         }
         return "Слабый пароль";
     }
 
+    public static boolean checkSpeedAndCostsGasInString(String stringNumPrice) {
+        if (stringNumPrice == null || stringNumPrice.isEmpty()){
+            return false;
+        }
+
+        return stringNumPrice.matches("(^\\d{0,3}\\.[\\d])") && Double.parseDouble(stringNumPrice) > 0 ||
+                        stringNumPrice.matches("^[\\d]{0,3}") && Integer.parseInt(stringNumPrice) > 0;
+    }// end checkSpeed
+
+    public static boolean checkPriceInString(String stringNumPrice) {
+        if (stringNumPrice == null || stringNumPrice.isEmpty()){
+            return false;
+        }
+
+        return stringNumPrice.matches("^(\\d+(\\.?[\\d]{1,2}))$") ||
+                    stringNumPrice.matches("^\\d+$");
+    }// end checkPrice
+
+
 
     public static boolean errorPassword(String checkString){
+        if (checkString == null || checkString.isEmpty()){
+            return true;
+        }
+
         return !checkString.matches("^[a-zA-Z0-9!@#$%^ &*]*$");
     }
 
@@ -157,6 +213,8 @@ public class Check {
         File file = new File(WorkData.getPathNameFile());
         return file.exists();
     }
+
+
 
 
 
